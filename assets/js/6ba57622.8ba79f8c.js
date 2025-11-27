@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkclient_api=globalThis.webpackChunkclient_api||[]).push([[130],{1258:e=>{e.exports=JSON.parse('{"name":"docusaurus-plugin-redoc","id":"plugin-redoc-0"}')}}]);
