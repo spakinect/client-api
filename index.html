@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.8.1">
 <title data-rh="true">Introduction to the Spakinect Client API | Client API Documentation</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://spakinect.github.io/client-api/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="Introduction to the Spakinect Client API | Client API Documentation"><meta data-rh="true" name="description" content="The Spakinect Client Integration API enables medspas and clinics to integrate with the Spakinect telemedicine platform for managing aesthetic treatment appointments."><meta data-rh="true" property="og:description" content="The Spakinect Client Integration API enables medspas and clinics to integrate with the Spakinect telemedicine platform for managing aesthetic treatment appointments."><link data-rh="true" rel="icon" href="/client-api/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://spakinect.github.io/client-api/"><link data-rh="true" rel="alternate" href="https://spakinect.github.io/client-api/" hreflang="en"><link data-rh="true" rel="alternate" href="https://spakinect.github.io/client-api/" hreflang="x-default"><script data-rh="true">function insertBanner(){var n=document.createElement("div");n.id="__docusaurus-base-url-issue-banner-container";n.innerHTML='\n<div id="__docusaurus-base-url-issue-banner" style="border: thick solid red; background-color: rgb(255, 230, 179); margin: 20px; padding: 20px; font-size: 20px;">\n   <p style="font-weight: bold; font-size: 30px;">Your Docusaurus site did not load properly.</p>\n   <p>A very common reason is a wrong site <a href="https://docusaurus.io/docs/docusaurus.config.js/#baseUrl" style="font-weight: bold;">baseUrl configuration</a>.</p>\n   <p>Current configured baseUrl = <span style="font-weight: bold; color: red;">/client-api/</span> </p>\n   <p>We suggest trying baseUrl = <span id="__docusaurus-base-url-issue-banner-suggestion-container" style="font-weight: bold; color: green;"></span></p>\n</div>\n',document.body.prepend(n);var e=document.getElementById("__docusaurus-base-url-issue-banner-suggestion-container"),s=window.location.pathname,o="/"===s.substr(-1)?s:s+"/";e.innerHTML=o}document.addEventListener("DOMContentLoaded",function(){void 0===window.docusaurus&&insertBanner()})</script><link rel="stylesheet" href="/client-api/assets/css/styles.b06e8b24.css">
-<script src="/client-api/assets/js/runtime~main.3493cf0b.js" defer="defer"></script>
+<script src="/client-api/assets/js/runtime~main.066038aa.js" defer="defer"></script>
 <script src="/client-api/assets/js/main.2999af86.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -55,38 +55,14 @@
 <ol>
 <li><strong>Create Appointment</strong> - Call <code>/appointments</code> endpoint with patient details</li>
 <li><strong>Patient Processing</strong> - Spakinect handles consultation and GFE</li>
-<li><strong>Get Results</strong> - Receive webhook notification or poll <code>/visits/{gfe_id}</code> endpoint</li>
+<li><strong>Get Results</strong> - Receive webhook notification or poll <code>/visits/{gfe_id}</code> endpoint to get GFE status</li>
 <li><strong>Process Decisions</strong> - Update your system with approved, conditionally approved, or deferred treatments</li>
 </ol>
-<hr>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="understanding-treatment-decisions">Understanding Treatment Decisions<a href="#understanding-treatment-decisions" class="hash-link" aria-label="Direct link to Understanding Treatment Decisions" title="Direct link to Understanding Treatment Decisions">​</a></h2>
-<p>When a visit completes, treatments are categorized as:</p>
-<ul>
-<li><strong>Approved</strong>: Ready to proceed immediately</li>
-<li><strong>Conditionally Approved</strong>: Approved with specific conditions (see GFE PDF)</li>
-<li><strong>Deferred</strong>: Postponed for future evaluation</li>
-</ul>
-<hr>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="webhook-benefits">Webhook Benefits<a href="#webhook-benefits" class="hash-link" aria-label="Direct link to Webhook Benefits" title="Direct link to Webhook Benefits">​</a></h2>
-<ul>
-<li>Receive instant notifications when visits complete</li>
-<li>No need to poll the API repeatedly</li>
-<li>Automatic retry on failed deliveries</li>
-<li>Better user experience with real-time updates</li>
-</ul>
-<hr>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="best-practices">Best Practices<a href="#best-practices" class="hash-link" aria-label="Direct link to Best Practices" title="Direct link to Best Practices">​</a></h2>
-<ul>
-<li>Store API keys securely in environment variables</li>
-<li>Use webhooks instead of polling for visit status</li>
-<li>Implement error handling with retry logic</li>
-<li>Cache treatment lists locally</li>
-</ul>
 <hr>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="support">Support<a href="#support" class="hash-link" aria-label="Direct link to Support" title="Direct link to Support">​</a></h2>
 <ul>
 <li><strong>Email</strong>: <a href="mailto:support@spakinect.com" target="_blank" rel="noopener noreferrer">support@spakinect.com</a></li>
 </ul>
-<hr></article></div><div class="col col--2"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-you-can-do" class="table-of-contents__link toc-highlight">What You Can Do</a></li><li><a href="#getting-started" class="table-of-contents__link toc-highlight">Getting Started</a><ul><li><a href="#1-generate-your-api-key" class="table-of-contents__link toc-highlight">1. Generate Your API Key</a></li><li><a href="#2-authentication" class="table-of-contents__link toc-highlight">2. Authentication</a></li><li><a href="#3-configure-webhooks-optional" class="table-of-contents__link toc-highlight">3. Configure Webhooks (Optional)</a></li></ul></li><li><a href="#environment" class="table-of-contents__link toc-highlight">Environment</a><ul><li><a href="#production" class="table-of-contents__link toc-highlight">Production</a></li></ul></li><li><a href="#quick-example" class="table-of-contents__link toc-highlight">Quick Example</a></li><li><a href="#integration-flow" class="table-of-contents__link toc-highlight">Integration Flow</a></li><li><a href="#understanding-treatment-decisions" class="table-of-contents__link toc-highlight">Understanding Treatment Decisions</a></li><li><a href="#webhook-benefits" class="table-of-contents__link toc-highlight">Webhook Benefits</a></li><li><a href="#best-practices" class="table-of-contents__link toc-highlight">Best Practices</a></li><li><a href="#support" class="table-of-contents__link toc-highlight">Support</a></li></ul></div></div></div></main></div></div>
+<hr></article></div><div class="col col--2"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-you-can-do" class="table-of-contents__link toc-highlight">What You Can Do</a></li><li><a href="#getting-started" class="table-of-contents__link toc-highlight">Getting Started</a><ul><li><a href="#1-generate-your-api-key" class="table-of-contents__link toc-highlight">1. Generate Your API Key</a></li><li><a href="#2-authentication" class="table-of-contents__link toc-highlight">2. Authentication</a></li><li><a href="#3-configure-webhooks-optional" class="table-of-contents__link toc-highlight">3. Configure Webhooks (Optional)</a></li></ul></li><li><a href="#environment" class="table-of-contents__link toc-highlight">Environment</a><ul><li><a href="#production" class="table-of-contents__link toc-highlight">Production</a></li></ul></li><li><a href="#quick-example" class="table-of-contents__link toc-highlight">Quick Example</a></li><li><a href="#integration-flow" class="table-of-contents__link toc-highlight">Integration Flow</a></li><li><a href="#support" class="table-of-contents__link toc-highlight">Support</a></li></ul></div></div></div></main></div></div>
 </body>
 </html>
