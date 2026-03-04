@@ -1,0 +1,96 @@
+BadRequest:
+  description: Bad request - Invalid input parameters
+  content:
+    application/json:
+      schema:
+        $ref: ./schemas/common.yaml#/ErrorResponse
+      examples:
+        missing_required_fields:
+          summary: Missing required fields
+          value:
+            success: false
+            error: Missing required patient details
+        invalid_gfe_id:
+          summary: Invalid GFE ID format
+          value:
+            success: false
+            error: GFE ID is required
+
+Unauthorized:
+  description: Unauthorized - Invalid or missing API key
+  content:
+    application/json:
+      schema:
+        $ref: ./schemas/common.yaml#/ErrorResponse
+      examples:
+        missing_api_key:
+          summary: Missing API key
+          value:
+            success: false
+            error: "Unauthorized: API key is missing."
+        invalid_api_key:
+          summary: Invalid API key
+          value:
+            success: false
+            error: "Forbidden: Invalid API key."
+
+Forbidden:
+  description: Forbidden - Client not authorized for requested resource
+  content:
+    application/json:
+      schema:
+        $ref: ./schemas/common.yaml#/ErrorResponse
+      examples:
+        location_access_denied:
+          summary: No access to location
+          value:
+            success: false
+            error: Client is not authorized for this location
+        gfe_access_denied:
+          summary: No access to GFE
+          value:
+            success: false
+            error: Client is not authorized to access this GFE
+
+NotFound:
+  description: Resource not found
+  content:
+    application/json:
+      schema:
+        $ref: ./schemas/common.yaml#/ErrorResponse
+      examples:
+        gfe_not_found:
+          summary: GFE not found
+          value:
+            success: false
+            error: GFE not found
+        location_not_found:
+          summary: Location not found
+          value:
+            success: false
+            error: Location not found
+        client_not_found:
+          summary: Client document not found
+          value:
+            success: false
+            error: Not Found
+            message: Client document not found
+        endpoint_not_found:
+          summary: Endpoint not found
+          value:
+            success: false
+            error: Not found
+            message: Client endpoint /invalid-path not found
+
+InternalServerError:
+  description: Internal server error
+  content:
+    application/json:
+      schema:
+        $ref: ./schemas/common.yaml#/ErrorResponse
+      examples:
+        server_error:
+          summary: Generic server error
+          value:
+            success: false
+            error: Internal server error

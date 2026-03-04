@@ -1,0 +1,27 @@
+Treatment:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: string
+      description: Unique identifier for the treatment
+      example: treatment_001
+    name:
+      type: string
+      description: Display name of the treatment
+      example: Botox Injection
+  additionalProperties: false
+
+TreatmentsResponse:
+  type: object
+  required:
+    - data
+  properties:
+    data:
+      type: array
+      description: List of available treatments
+      items:
+        $ref: "#/Treatment"
+  additionalProperties: false

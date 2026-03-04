@@ -1,0 +1,51 @@
+post:
+  summary: Create New Appointment
+  description: >
+    Creates a new at-home appointment (Good Faith Exam) in the Spakinect system.
+    Automatically handles patient creation or lookup based on provided details.
+  operationId: createAppointment
+  tags:
+    - Appointments
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../client-openapi.yaml#/components/schemas/CreateAppointmentRequest"
+        examples:
+          standard_appointment:
+            summary: Standard appointment creation
+            value:
+              patient_details:
+                first_name: John
+                last_name: Doe
+                email: john.doe@example.com
+                phone: "+1234567890"
+              location_id: loc_12345
+              appointment_time: 1640995200
+              requested_treatments:
+                - Botox Injection
+                - Dermal Filler
+  responses:
+    "201":
+      description: Appointment created successfully
+      content:
+        application/json:
+          schema:
+            $ref: "../client-openapi.yaml#/components/schemas/CreateAppointmentResponse"
+          examples:
+            success:
+              summary: Successful appointment creation
+              value:
+                success: true
+                gfe_id: gfe_abc123xyz789
+    "400":
+      $ref: "../client-openapi.yaml#/components/responses/BadRequest"
+    "401":
+      $ref: "../client-openapi.yaml#/components/responses/Unauthorized"
+    "403":
+      $ref: "../client-openapi.yaml#/components/responses/Forbidden"
+    "404":
+      $ref: "../client-openapi.yaml#/components/responses/NotFound"
+    "500":
+      $ref: "../client-openapi.yaml#/components/responses/InternalServerError"

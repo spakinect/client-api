@@ -1,0 +1,29 @@
+get:
+  summary: Get Available Treatments
+  description: >
+    Retrieves a list of all available treatments that can be requested in appointments.
+  operationId: getTreatments
+  tags:
+    - Treatments
+  responses:
+    "200":
+      description: List of available treatments
+      content:
+        application/json:
+          schema:
+            $ref: "../client-openapi.yaml#/components/schemas/TreatmentsResponse"
+          examples:
+            treatments_list:
+              summary: Available treatments
+              value:
+                data:
+                  - id: treatment_001
+                    name: Botox Injection
+                  - id: treatment_002
+                    name: Dermal Filler
+                  - id: treatment_003
+                    name: Chemical Peel
+    "401":
+      $ref: "../client-openapi.yaml#/components/responses/Unauthorized"
+    "500":
+      $ref: "../client-openapi.yaml#/components/responses/InternalServerError"

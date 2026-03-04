@@ -1,0 +1,70 @@
+VisitData:
+  type: object
+  required:
+    - gfe_id
+    - status
+    - requested_treatments
+    - patient_details
+  properties:
+    gfe_id:
+      type: string
+      description: Unique identifier for the GFE visit
+      example: gfe_abc123xyz789
+    status:
+      type: string
+      description: Current status of the visit
+      enum:
+        - Processing
+        - Pending Review
+        - Approved
+        - Completed
+        - Cancelled
+        - Rejected
+      example: Processing
+    requested_treatments:
+      type: array
+      description: List of treatments requested for this visit
+      items:
+        type: string
+      example:
+        - Botox Injection
+        - Dermal Filler
+    patient_details:
+      $ref: ./patient.yaml#/VisitPatientDetails
+    approved_treatments:
+      type: array
+      description: Present only when status is Completed. Names of treatments approved.
+      items:
+        type: string
+      example:
+        - Botox Injection
+    conditionally_approved_treatments:
+      type: array
+      description: >
+        Present only when status is Completed. Names of treatments approved with
+        conditions.
+      items:
+        type: string
+      example:
+        - Dermal Filler
+    deferred_treatments:
+      type: array
+      description: Present only when status is Completed. Names of treatments deferred.
+      items:
+        type: string
+      example: []
+  additionalProperties: false
+
+VisitStatusResponse:
+  type: object
+  required:
+    - success
+    - data
+  properties:
+    success:
+      type: boolean
+      description: Indicates if the request was processed successfully
+      example: true
+    data:
+      $ref: "#/VisitData"
+  additionalProperties: false

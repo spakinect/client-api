@@ -1,0 +1,58 @@
+PatientDetails:
+  type: object
+  required:
+    - first_name
+    - last_name
+    - email
+    - phone
+  properties:
+    first_name:
+      type: string
+      description: Patient's first name
+      example: John
+      minLength: 1
+      maxLength: 100
+    last_name:
+      type: string
+      description: Patient's last name
+      example: Doe
+      minLength: 1
+      maxLength: 100
+    email:
+      type: string
+      format: email
+      description: Patient's email address
+      example: john.doe@example.com
+    phone:
+      type: string
+      description: Patient's phone number
+      example: "+1234567890"
+      pattern: "^\\+?[1-9]\\d{1,14}$"
+  additionalProperties: false
+
+VisitPatientDetails:
+  type: object
+  required:
+    - name
+    - first_name
+    - last_name
+    - email
+  properties:
+    name:
+      type: string
+      description: Patient's full name
+      example: John Doe
+    first_name:
+      type: string
+      description: Patient's first name
+      example: John
+    last_name:
+      type: string
+      description: Patient's last name
+      example: Doe
+    email:
+      type: string
+      format: email
+      description: Patient's email address
+      example: john.doe@example.com
+  additionalProperties: false

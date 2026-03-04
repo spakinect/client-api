@@ -10,6 +10,34 @@ npm install
 
 **Note:** This project uses `.npmrc` with `legacy-peer-deps=true` to handle peer dependency conflicts between Docusaurus and redocusaurus.
 
+## API Specification Structure
+
+The OpenAPI spec is split into modular YAML files for maintainability:
+
+```
+api/
+├── client-openapi.yaml       # Root file - edit this to add paths/schemas
+├── client-openapi.json       # Bundled output (auto-generated, do not edit)
+├── paths/                    # One file per endpoint
+│   ├── appointments.yaml
+│   ├── treatments.yaml
+│   └── visits.yaml
+└── components/
+    ├── security.yaml
+    ├── responses.yaml        # Shared error responses
+    └── schemas/              # Schemas grouped by domain
+        ├── appointment.yaml
+        ├── patient.yaml
+        ├── treatment.yaml
+        ├── visit.yaml
+        ├── webhook.yaml
+        └── common.yaml
+```
+
+- **Edit** the YAML files in `api/` when updating the API spec
+- **Build** runs `npm run bundle` to merge everything into `client-openapi.json` for Docusaurus
+- Run `npm run bundle` alone to regenerate the JSON without a full build
+
 ## Local Development
 
 ```bash

@@ -1,0 +1,72 @@
+get:
+  summary: Get Visit Status
+  description: >
+    Retrieves the current status and details of a Good Faith Exam (GFE) visit by ID.
+    Only returns visits that the authenticated Client has access to based on location
+    permissions. When the visit status is 'Completed', the response includes decision
+    outcomes mapped to treatment names: approved_treatments,
+    conditionally_approved_treatments, and deferred_treatments.
+  operationId: getVisitStatus
+  tags:
+    - Visits
+  parameters:
+    - name: gfe_id
+      in: path
+      required: true
+      description: The unique identifier of the GFE visit
+      schema:
+        type: string
+        example: gfe_abc123xyz789
+  responses:
+    "200":
+      description: Visit status retrieved successfully
+      content:
+        application/json:
+          schema:
+            $ref: "../client-openapi.yaml#/components/schemas/VisitStatusResponse"
+          examples:
+            completed_status:
+              summary: Completed visit
+              value:
+                success: true
+                data:
+                  gfe_id: gfe_abc123xyz789
+                  status: Completed
+                  requested_treatments:
+                    - Botox Injection
+                    - Dermal Filler
+                  approved_treatments:
+                    - Botox Injection
+                  conditionally_approved_treatments:
+                    - Dermal Filler
+                  deferred_treatments: []
+                  patient_details:
+                    name: Jane Smith
+                    first_name: Jane
+                    last_name: Smith
+                    email: jane.smith@example.com
+            processing_status:
+              summary: Visit in processing status
+              value:
+                success: true
+                data:
+                  gfe_id: gfe_abc123xyz789
+                  status: Processing
+                  requested_treatments:
+                    - Botox Injection
+                    - Dermal Filler
+                  patient_details:
+                    name: John Doe
+                    first_name: John
+                    last_name: Doe
+                    email: john.doe@example.com
+    "400":
+      $ref: "../client-openapi.yaml#/components/responses/BadRequest"
+    "401":
+      $ref: "../client-openapi.yaml#/components/responses/Unauthorized"
+    "403":
+      $ref: "../client-openapi.yaml#/components/responses/Forbidden"
+    "404":
+      $ref: "../client-openapi.yaml#/components/responses/NotFound"
+    "500":
+      $ref: "../client-openapi.yaml#/components/responses/InternalServerError"

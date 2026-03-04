@@ -1,0 +1,86 @@
+openapi: 3.0.3
+
+info:
+  title: Spakinect Client Integration API
+  description: >
+    API for Client systems (medspas, clinics) to integrate with the Spakinect
+    telemedicine platform. Provides endpoints for managing patient appointments,
+    retrieving treatments, checking visit statuses, and configuring webhooks.
+  version: 1.0.0
+  contact:
+    name: Spakinect Support
+    email: support@spakinect.com
+
+servers:
+  - url: https://us-central1-spakinect-app.cloudfunctions.net/client
+    description: Production Server
+  - url: https://us-central1-spakinect-staging.cloudfunctions.net/client
+    description: Staging Server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /appointments:
+    $ref: ./paths/appointments.yaml
+  /treatments:
+    $ref: ./paths/treatments.yaml
+  /visits/{gfe_id}:
+    $ref: ./paths/visits.yaml
+
+components:
+  securitySchemes:
+    $ref: ./components/security.yaml
+
+  schemas:
+    CreateAppointmentRequest:
+      $ref: ./components/schemas/appointment.yaml#/CreateAppointmentRequest
+    CreateAppointmentResponse:
+      $ref: ./components/schemas/appointment.yaml#/CreateAppointmentResponse
+    PatientDetails:
+      $ref: ./components/schemas/patient.yaml#/PatientDetails
+    VisitPatientDetails:
+      $ref: ./components/schemas/patient.yaml#/VisitPatientDetails
+    Treatment:
+      $ref: ./components/schemas/treatment.yaml#/Treatment
+    TreatmentsResponse:
+      $ref: ./components/schemas/treatment.yaml#/TreatmentsResponse
+    VisitData:
+      $ref: ./components/schemas/visit.yaml#/VisitData
+    VisitStatusResponse:
+      $ref: ./components/schemas/visit.yaml#/VisitStatusResponse
+    VisitCompletedWebhook:
+      $ref: ./components/schemas/webhook.yaml#/VisitCompletedWebhook
+    VisitCompletedWebhookData:
+      $ref: ./components/schemas/webhook.yaml#/VisitCompletedWebhookData
+    TreatmentUpdatedWebhook:
+      $ref: ./components/schemas/webhook.yaml#/TreatmentUpdatedWebhook
+    ErrorResponse:
+      $ref: ./components/schemas/common.yaml#/ErrorResponse
+
+  responses:
+    BadRequest:
+      $ref: ./components/responses.yaml#/BadRequest
+    Unauthorized:
+      $ref: ./components/responses.yaml#/Unauthorized
+    Forbidden:
+      $ref: ./components/responses.yaml#/Forbidden
+    NotFound:
+      $ref: ./components/responses.yaml#/NotFound
+    InternalServerError:
+      $ref: ./components/responses.yaml#/InternalServerError
+
+tags:
+  - name: Appointments
+    description: Operations for creating and managing Good Faith Exam appointments
+  - name: Treatments
+    description: Operations for retrieving available medical treatments
+  - name: Visits
+    description: Operations for checking visit status and details
+
+x-tagGroups:
+  - name: API Endpoints
+    tags:
+      - Appointments
+      - Treatments
+      - Visits

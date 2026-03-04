@@ -1,0 +1,7 @@
+ApiKeyAuth:
+  type: apiKey
+  in: header
+  name: x-api-key
+  description: >
+    API key provided by Spakinect for Client integration. This key must be
+    associated with at least one location that the Client system has access to.

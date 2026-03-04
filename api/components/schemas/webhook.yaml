@@ -1,0 +1,160 @@
+VisitCompletedWebhook:
+  type: object
+  title: Visit Completed Webhook
+  description: >
+    Payload delivered to the Client webhook URL when a GFE visit is completed.
+  required:
+    - event
+    - timestamp
+    - success
+    - data
+  properties:
+    event:
+      type: string
+      description: The webhook event type.
+      enum:
+        - visit.completed
+      example: visit.completed
+    timestamp:
+      type: integer
+      description: Unix timestamp (milliseconds) when the webhook was generated.
+      example: 1714675200000
+    success:
+      type: boolean
+      description: Indicates if the visit data retrieval was successful.
+      example: true
+    data:
+      $ref: "#/VisitCompletedWebhookData"
+  example:
+    event: visit.completed
+    timestamp: 1714675200000
+    success: true
+    data:
+      location_id: loc_12345
+      gfe_id: gfe_abc123xyz789
+      status: Completed
+      pdf_link: https://example-cdn.com/gfe/gfe_abc123xyz789.pdf
+      requested_treatments:
+        - Botox Injection
+        - Dermal Filler
+      approved_treatments:
+        - Botox Injection
+      conditionally_approved_treatments:
+        - Dermal Filler
+      deferred_treatments: []
+      patient_details:
+        name: Jane Smith
+        first_name: Jane
+        last_name: Smith
+        email: jane.smith@example.com
+
+VisitCompletedWebhookData:
+  type: object
+  title: Visit Completed Webhook Data
+  required:
+    - location_id
+    - gfe_id
+    - status
+    - requested_treatments
+    - patient_details
+  properties:
+    location_id:
+      type: string
+      description: The ID of the location where the visit took place.
+      example: loc_12345
+    gfe_id:
+      type: string
+      description: Unique identifier for the GFE visit.
+      example: gfe_abc123xyz789
+    status:
+      type: string
+      description: Final status of the visit.
+      enum:
+        - Completed
+      example: Completed
+    pdf_link:
+      type: string
+      format: uri
+      description: URL to the generated GFE PDF, if available.
+      example: https://example-cdn.com/gfe/gfe_abc123xyz789.pdf
+    requested_treatments:
+      type: array
+      description: List of treatments originally requested for this visit.
+      items:
+        type: string
+      example:
+        - Botox Injection
+        - Dermal Filler
+    patient_details:
+      $ref: ./patient.yaml#/VisitPatientDetails
+    approved_treatments:
+      type: array
+      description: >
+        Names of treatments approved by the provider. Present when status is
+        Completed.
+      items:
+        type: string
+      example:
+        - Botox Injection
+    conditionally_approved_treatments:
+      type: array
+      description: >
+        Names of treatments that are conditionally approved. Present when status
+        is Completed.
+      items:
+        type: string
+      example:
+        - Dermal Filler
+    deferred_treatments:
+      type: array
+      description: >
+        Names of treatments deferred to a later time. Present when status is
+        Completed.
+      items:
+        type: string
+      example: []
+  additionalProperties: false
+
+TreatmentUpdatedWebhook:
+  type: object
+  title: Treatment Updated Webhook
+  description: >
+    Payload delivered to the Client webhook URL when treatment information is
+    updated.
+  required:
+    - event
+    - timestamp
+    - success
+    - data
+  properties:
+    event:
+      type: string
+      description: The webhook event type.
+      enum:
+        - treatment.updated
+      example: treatment.updated
+    timestamp:
+      type: integer
+      description: Unix timestamp (milliseconds) when the webhook was generated.
+      example: 1714675200000
+    success:
+      type: boolean
+      description: Indicates if the update was successful.
+      example: true
+    data:
+      type: object
+      description: Treatment update details
+      properties:
+        treatment_id:
+          type: string
+          example: treatment_001
+        treatment_name:
+          type: string
+          example: Botox Injection
+        action:
+          type: string
+          enum:
+            - created
+            - updated
+            - deleted
+          example: updated

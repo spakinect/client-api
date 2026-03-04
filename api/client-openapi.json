@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Spakinect Client Integration API",
-    "description": "API for Client systems (medspas, clinics) to integrate with the Spakinect telemedicine platform. Provides endpoints for managing patient appointments, retrieving treatments, checking visit statuses, and configuring webhooks.",
+    "description": "API for Client systems (medspas, clinics) to integrate with the Spakinect telemedicine platform. Provides endpoints for managing patient appointments, retrieving treatments, checking visit statuses, and configuring webhooks.\n",
     "version": "1.0.0",
     "contact": {
       "name": "Spakinect Support",
@@ -24,11 +24,25 @@
       "ApiKeyAuth": []
     }
   ],
+  "tags": [
+    {
+      "name": "Appointments",
+      "description": "Operations for creating and managing Good Faith Exam appointments"
+    },
+    {
+      "name": "Treatments",
+      "description": "Operations for retrieving available medical treatments"
+    },
+    {
+      "name": "Visits",
+      "description": "Operations for checking visit status and details"
+    }
+  ],
   "paths": {
     "/appointments": {
       "post": {
         "summary": "Create New Appointment",
-        "description": "Creates a new at-home appointment (Good Faith Exam) in the Spakinect system. Automatically handles patient creation or lookup based on provided details.",
+        "description": "Creates a new at-home appointment (Good Faith Exam) in the Spakinect system. Automatically handles patient creation or lookup based on provided details.\n",
         "operationId": "createAppointment",
         "tags": [
           "Appointments"
@@ -103,7 +117,7 @@
     "/treatments": {
       "get": {
         "summary": "Get Available Treatments",
-        "description": "Retrieves a list of all available treatments that can be requested in appointments.",
+        "description": "Retrieves a list of all available treatments that can be requested in appointments.\n",
         "operationId": "getTreatments",
         "tags": [
           "Treatments"
@@ -152,7 +166,7 @@
     "/visits/{gfe_id}": {
       "get": {
         "summary": "Get Visit Status",
-        "description": "Retrieves the current status and details of a Good Faith Exam (GFE) visit by ID. Only returns visits that the authenticated Client has access to based on location permissions. When the visit status is 'Completed', the response includes decision outcomes mapped to treatment names: approved_treatments, conditionally_approved_treatments, and deferred_treatments.",
+        "description": "Retrieves the current status and details of a Good Faith Exam (GFE) visit by ID. Only returns visits that the authenticated Client has access to based on location permissions. When the visit status is 'Completed', the response includes decision outcomes mapped to treatment names: approved_treatments, conditionally_approved_treatments, and deferred_treatments.\n",
         "operationId": "getVisitStatus",
         "tags": [
           "Visits"
@@ -246,7 +260,7 @@
           }
         }
       }
-    },
+    }
   },
   "components": {
     "securitySchemes": {
@@ -254,7 +268,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "API key provided by Spakinect for Client integration. This key must be associated with at least one location that the Client system has access to."
+        "description": "API key provided by Spakinect for Client integration. This key must be associated with at least one location that the Client system has access to.\n"
       }
     },
     "schemas": {
@@ -292,6 +306,26 @@
               "Botox Injection",
               "Dermal Filler"
             ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAppointmentResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "gfe_id"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates if the appointment was created successfully",
+            "example": true
+          },
+          "gfe_id": {
+            "type": "string",
+            "description": "Unique identifier for the created GFE appointment",
+            "example": "gfe_abc123xyz789"
           }
         },
         "additionalProperties": false
@@ -334,38 +368,35 @@
         },
         "additionalProperties": false
       },
-      "CreateAppointmentResponse": {
+      "VisitPatientDetails": {
         "type": "object",
         "required": [
-          "success",
-          "gfe_id"
+          "name",
+          "first_name",
+          "last_name",
+          "email"
         ],
         "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "Indicates if the appointment was created successfully",
-            "example": true
-          },
-          "gfe_id": {
+          "name": {
             "type": "string",
-            "description": "Unique identifier for the created GFE appointment",
-            "example": "gfe_abc123xyz789"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TreatmentsResponse": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "type": "array",
-            "description": "List of available treatments",
-            "items": {
-              "$ref": "#/components/schemas/Treatment"
-            }
+            "description": "Patient's full name",
+            "example": "John Doe"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "Patient's first name",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "Patient's last name",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Patient's email address",
+            "example": "john.doe@example.com"
           }
         },
         "additionalProperties": false
@@ -390,20 +421,18 @@
         },
         "additionalProperties": false
       },
-      "VisitStatusResponse": {
+      "TreatmentsResponse": {
         "type": "object",
         "required": [
-          "success",
           "data"
         ],
         "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "Indicates if the request was processed successfully",
-            "example": true
-          },
           "data": {
-            "$ref": "#/components/schemas/VisitData"
+            "type": "array",
+            "description": "List of available treatments",
+            "items": {
+              "$ref": "#/components/schemas/Treatment"
+            }
           }
         },
         "additionalProperties": false
@@ -461,7 +490,7 @@
           },
           "conditionally_approved_treatments": {
             "type": "array",
-            "description": "Present only when status is Completed. Names of treatments approved with conditions.",
+            "description": "Present only when status is Completed. Names of treatments approved with conditions.\n",
             "items": {
               "type": "string"
             },
@@ -480,35 +509,20 @@
         },
         "additionalProperties": false
       },
-      "VisitPatientDetails": {
+      "VisitStatusResponse": {
         "type": "object",
         "required": [
-          "name",
-          "first_name",
-          "last_name",
-          "email"
+          "success",
+          "data"
         ],
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "Patient's full name",
-            "example": "John Doe"
+          "success": {
+            "type": "boolean",
+            "description": "Indicates if the request was processed successfully",
+            "example": true
           },
-          "first_name": {
-            "type": "string",
-            "description": "Patient's first name",
-            "example": "John"
-          },
-          "last_name": {
-            "type": "string",
-            "description": "Patient's last name",
-            "example": "Doe"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "Patient's email address",
-            "example": "john.doe@example.com"
+          "data": {
+            "$ref": "#/components/schemas/VisitData"
           }
         },
         "additionalProperties": false
@@ -516,7 +530,7 @@
       "VisitCompletedWebhook": {
         "type": "object",
         "title": "Visit Completed Webhook",
-        "description": "Payload delivered to the Client webhook URL when a GFE visit is completed.",
+        "description": "Payload delivered to the Client webhook URL when a GFE visit is completed.\n",
         "required": [
           "event",
           "timestamp",
@@ -626,7 +640,7 @@
           },
           "approved_treatments": {
             "type": "array",
-            "description": "Names of treatments approved by the provider. Present when status is Completed.",
+            "description": "Names of treatments approved by the provider. Present when status is Completed.\n",
             "items": {
               "type": "string"
             },
@@ -636,7 +650,7 @@
           },
           "conditionally_approved_treatments": {
             "type": "array",
-            "description": "Names of treatments that are conditionally approved. Present when status is Completed.",
+            "description": "Names of treatments that are conditionally approved. Present when status is Completed.\n",
             "items": {
               "type": "string"
             },
@@ -646,7 +660,7 @@
           },
           "deferred_treatments": {
             "type": "array",
-            "description": "Names of treatments deferred to a later time. Present when status is Completed.",
+            "description": "Names of treatments deferred to a later time. Present when status is Completed.\n",
             "items": {
               "type": "string"
             },
@@ -658,7 +672,7 @@
       "TreatmentUpdatedWebhook": {
         "type": "object",
         "title": "Treatment Updated Webhook",
-        "description": "Payload delivered to the Client webhook URL when treatment information is updated.",
+        "description": "Payload delivered to the Client webhook URL when treatment information is updated.\n",
         "required": [
           "event",
           "timestamp",
@@ -733,7 +747,7 @@
           }
         },
         "additionalProperties": false
-      },
+      }
     },
     "responses": {
       "BadRequest": {
@@ -875,31 +889,16 @@
           }
         }
       }
-    },
-    "tags": [
-      {
-        "name": "Appointments",
-        "description": "Operations for creating and managing Good Faith Exam appointments"
-      },
-      {
-        "name": "Treatments",
-        "description": "Operations for retrieving available medical treatments"
-      },
-      {
-        "name": "Visits",
-        "description": "Operations for checking visit status and details"
-      }
-    ],
-    "x-tagGroups": [
-      {
-        "name": "API Endpoints",
-        "tags": ["Appointments", "Treatments", "Visits"]
-      },
-      {
-        "name": "Webhook Events",
-        "tags": []
-      }
-    ]
-  }
+    }
+  },
+  "x-tagGroups": [
+    {
+      "name": "API Endpoints",
+      "tags": [
+        "Appointments",
+        "Treatments",
+        "Visits"
+      ]
+    }
+  ]
 }
-
