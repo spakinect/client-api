@@ -1,0 +1,58 @@
+get:
+  summary: Get Completed GFEs
+  description: |
+    **Endpoint:** `GET /gfes?status=completed`
+
+    Retrieves all completed Good Faith Exam (GFE) visits for the authenticated Client.
+     Only visits with status
+    'Completed' are returned. Each GFE includes patient details, treatment decisions
+    (approved, conditionally approved, deferred), and a signed PDF link when available.
+  operationId: getCompletedGFEs
+  tags:
+    - GFEs
+  parameters:
+    - name: status
+      in: path
+      required: true
+      description: Must be "completed" to fetch completed GFEs
+      schema:
+        type: string
+        enum:
+          - completed
+        example: completed
+  responses:
+    "200":
+      description: Completed GFEs retrieved successfully
+      content:
+        application/json:
+          schema:
+            $ref: "../client-openapi.yaml#/components/schemas/CompletedGFEsResponse"
+          example:
+            success: true
+            count: 2
+            gfes:
+              - gfe_id: gfe_abc123xyz789
+                status: Completed
+                requested_treatments:
+                  - Botox Injection
+                  - Dermal Filler
+                patient_details:
+                  name: Jane Smith
+                  first_name: Jane
+                  last_name: Smith
+                  dob: "01/15/1990"
+                  email: jane.smith@example.com
+                pdf_link: "https://storage.googleapis.com/..."
+                approved_treatments:
+                  - Botox Injection
+                conditionally_approved_treatments:
+                  - Dermal Filler
+                deferred_treatments: []
+    "400":
+      $ref: "../client-openapi.yaml#/components/responses/BadRequest"
+    "401":
+      $ref: "../client-openapi.yaml#/components/responses/Unauthorized"
+    "403":
+      $ref: "../client-openapi.yaml#/components/responses/Forbidden"
+    "500":
+      $ref: "../client-openapi.yaml#/components/responses/InternalServerError"

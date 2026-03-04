@@ -5,7 +5,8 @@ info:
   description: >
     API for Client systems (medspas, clinics) to integrate with the Spakinect
     telemedicine platform. Provides endpoints for managing patient appointments,
-    retrieving treatments, checking visit statuses, and configuring webhooks.
+    retrieving treatments, checking visit statuses, listing completed GFEs, and
+    configuring webhooks.
   version: 1.0.0
   contact:
     name: Spakinect Support
@@ -27,6 +28,8 @@ paths:
     $ref: ./paths/treatments.yaml
   /visits/{gfe_id}:
     $ref: ./paths/visits.yaml
+  /gfes:
+    $ref: ./paths/gfes.yaml
 
 components:
   securitySchemes:
@@ -49,6 +52,8 @@ components:
       $ref: ./components/schemas/visit.yaml#/VisitData
     VisitStatusResponse:
       $ref: ./components/schemas/visit.yaml#/VisitStatusResponse
+    CompletedGFEsResponse:
+      $ref: ./components/schemas/visit.yaml#/CompletedGFEsResponse
     VisitCompletedWebhook:
       $ref: ./components/schemas/webhook.yaml#/VisitCompletedWebhook
     VisitCompletedWebhookData:
@@ -77,6 +82,8 @@ tags:
     description: Operations for retrieving available medical treatments
   - name: Visits
     description: Operations for checking visit status and details
+  - name: GFEs
+    description: Operations for listing completed Good Faith Exam visits
 
 x-tagGroups:
   - name: API Endpoints
@@ -84,3 +91,4 @@ x-tagGroups:
       - Appointments
       - Treatments
       - Visits
+      - GFEs

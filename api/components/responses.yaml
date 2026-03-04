@@ -15,6 +15,11 @@ BadRequest:
           value:
             success: false
             error: GFE ID is required
+        status_param_required:
+          summary: Invalid status path parameter (GET /gfes/{status})
+          value:
+            success: false
+            error: 'status path parameter must be "completed"'
 
 Unauthorized:
   description: Unauthorized - Invalid or missing API key

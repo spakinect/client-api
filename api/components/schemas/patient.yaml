@@ -38,6 +38,10 @@ VisitPatientDetails:
     - last_name
     - email
   properties:
+    dob:
+      type: string
+      description: Date of birth in MM/DD/YYYY format
+      example: "01/15/1990"
     name:
       type: string
       description: Patient's full name

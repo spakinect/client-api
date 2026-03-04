@@ -53,6 +53,11 @@ VisitData:
       items:
         type: string
       example: []
+    pdf_link:
+      type: string
+      description: >
+        Signed URL to download the GFE PDF. Present when a PDF is available.
+        URL expires after a short period; request a new one via the API if needed.
   additionalProperties: false
 
 VisitStatusResponse:
@@ -67,4 +72,26 @@ VisitStatusResponse:
       example: true
     data:
       $ref: "#/VisitData"
+  additionalProperties: false
+
+CompletedGFEsResponse:
+  type: object
+  required:
+    - success
+    - count
+    - gfes
+  properties:
+    success:
+      type: boolean
+      description: Indicates if the request was processed successfully
+      example: true
+    count:
+      type: integer
+      description: Number of completed GFEs returned
+      example: 2
+    gfes:
+      type: array
+      description: List of completed GFE visit data
+      items:
+        $ref: "#/VisitData"
   additionalProperties: false
