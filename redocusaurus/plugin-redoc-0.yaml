@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Spakinect Client Integration API
-  description: >-
+  description: >
     API for Client systems (medspas, clinics) to integrate with the Spakinect
     telemedicine platform. Provides endpoints for managing patient appointments,
     retrieving treatments, checking visit statuses, and configuring webhooks.
@@ -16,11 +16,18 @@ servers:
     description: Staging Server
 security:
   - ApiKeyAuth: []
+tags:
+  - name: Appointments
+    description: Operations for creating and managing Good Faith Exam appointments
+  - name: Treatments
+    description: Operations for retrieving available medical treatments
+  - name: Visits
+    description: Operations for checking visit status and details
 paths:
   /appointments:
     post:
       summary: Create New Appointment
-      description: >-
+      description: >
         Creates a new at-home appointment (Good Faith Exam) in the Spakinect
         system. Automatically handles patient creation or lookup based on
         provided details.
@@ -73,7 +80,7 @@ paths:
   /treatments:
     get:
       summary: Get Available Treatments
-      description: >-
+      description: >
         Retrieves a list of all available treatments that can be requested in
         appointments.
       operationId: getTreatments
@@ -104,7 +111,7 @@ paths:
   /visits/{gfe_id}:
     get:
       summary: Get Visit Status
-      description: >-
+      description: >
         Retrieves the current status and details of a Good Faith Exam (GFE)
         visit by ID. Only returns visits that the authenticated Client has
         access to based on location permissions. When the visit status is
@@ -181,7 +188,7 @@ components:
       type: apiKey
       in: header
       name: x-api-key
-      description: >-
+      description: >
         API key provided by Spakinect for Client integration. This key must be
         associated with at least one location that the Client system has access
         to.
@@ -215,6 +222,21 @@ components:
             - Botox Injection
             - Dermal Filler
       additionalProperties: false
+    CreateAppointmentResponse:
+      type: object
+      required:
+        - success
+        - gfe_id
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the appointment was created successfully
+          example: true
+        gfe_id:
+          type: string
+          description: Unique identifier for the created GFE appointment
+          example: gfe_abc123xyz789
+      additionalProperties: false
     PatientDetails:
       type: object
       required:
@@ -246,31 +268,31 @@ components:
           example: '+1234567890'
           pattern: ^\+?[1-9]\d{1,14}$
       additionalProperties: false
-    CreateAppointmentResponse:
+    VisitPatientDetails:
       type: object
       required:
-        - success
-        - gfe_id
+        - name
+        - first_name
+        - last_name
+        - email
       properties:
-        success:
-          type: boolean
-          description: Indicates if the appointment was created successfully
-          example: true
-        gfe_id:
+        name:
           type: string
-          description: Unique identifier for the created GFE appointment
-          example: gfe_abc123xyz789
-      additionalProperties: false
-    TreatmentsResponse:
-      type: object
-      required:
-        - data
-      properties:
-        data:
-          type: array
-          description: List of available treatments
-          items:
-            $ref: '#/components/schemas/Treatment'
+          description: Patient's full name
+          example: John Doe
+        first_name:
+          type: string
+          description: Patient's first name
+          example: John
+        last_name:
+          type: string
+          description: Patient's last name
+          example: Doe
+        email:
+          type: string
+          format: email
+          description: Patient's email address
+          example: john.doe@example.com
       additionalProperties: false
     Treatment:
       type: object
@@ -287,18 +309,16 @@ components:
           description: Display name of the treatment
           example: Botox Injection
       additionalProperties: false
-    VisitStatusResponse:
+    TreatmentsResponse:
       type: object
       required:
-        - success
         - data
       properties:
-        success:
-          type: boolean
-          description: Indicates if the request was processed successfully
-          example: true
         data:
-          $ref: '#/components/schemas/VisitData'
+          type: array
+          description: List of available treatments
+          items:
+            $ref: '#/components/schemas/Treatment'
       additionalProperties: false
     VisitData:
       type: object
@@ -342,7 +362,7 @@ components:
             - Botox Injection
         conditionally_approved_treatments:
           type: array
-          description: >-
+          description: >
             Present only when status is Completed. Names of treatments approved
             with conditions.
           items:
@@ -356,36 +376,23 @@ components:
             type: string
           example: []
       additionalProperties: false
-    VisitPatientDetails:
+    VisitStatusResponse:
       type: object
       required:
-        - name
-        - first_name
-        - last_name
-        - email
+        - success
+        - data
       properties:
-        name:
-          type: string
-          description: Patient's full name
-          example: John Doe
-        first_name:
-          type: string
-          description: Patient's first name
-          example: John
-        last_name:
-          type: string
-          description: Patient's last name
-          example: Doe
-        email:
-          type: string
-          format: email
-          description: Patient's email address
-          example: john.doe@example.com
+        success:
+          type: boolean
+          description: Indicates if the request was processed successfully
+          example: true
+        data:
+          $ref: '#/components/schemas/VisitData'
       additionalProperties: false
     VisitCompletedWebhook:
       type: object
       title: Visit Completed Webhook
-      description: >-
+      description: >
         Payload delivered to the Client webhook URL when a GFE visit is
         completed.
       required:
@@ -473,7 +480,7 @@ components:
           $ref: '#/components/schemas/VisitPatientDetails'
         approved_treatments:
           type: array
-          description: >-
+          description: >
             Names of treatments approved by the provider. Present when status is
             Completed.
           items:
@@ -482,7 +489,7 @@ components:
             - Botox Injection
         conditionally_approved_treatments:
           type: array
-          description: >-
+          description: >
             Names of treatments that are conditionally approved. Present when
             status is Completed.
           items:
@@ -491,7 +498,7 @@ components:
             - Dermal Filler
         deferred_treatments:
           type: array
-          description: >-
+          description: >
             Names of treatments deferred to a later time. Present when status is
             Completed.
           items:
@@ -501,7 +508,7 @@ components:
     TreatmentUpdatedWebhook:
       type: object
       title: Treatment Updated Webhook
-      description: >-
+      description: >
         Payload delivered to the Client webhook URL when treatment information
         is updated.
       required:
@@ -653,18 +660,9 @@ components:
               value:
                 success: false
                 error: Internal server error
-  tags:
-    - name: Appointments
-      description: Operations for creating and managing Good Faith Exam appointments
-    - name: Treatments
-      description: Operations for retrieving available medical treatments
-    - name: Visits
-      description: Operations for checking visit status and details
-  x-tagGroups:
-    - name: API Endpoints
-      tags:
-        - Appointments
-        - Treatments
-        - Visits
-    - name: Webhook Events
-      tags: []
+x-tagGroups:
+  - name: API Endpoints
+    tags:
+      - Appointments
+      - Treatments
+      - Visits
